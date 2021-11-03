@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menadzer Loginow i Hasel</title>
+</head>
+<body>
+<h1>Repo Haseł</h1>
+
+<h2>Podaj Login oraz Hasło</h2>
+<input type="text" name="" id="login">
+
+<input type="text" name="" id="haslo">
+<button onclick="addLogin()">Dodaj</button>
+
+<div id="LoginList"></div>
+
+<script>
+
+    function addLogin() {
+            let login = document.getElementById('login').value;
+            let haslo = document.getElementById('haslo').value;
+            let pass = login + " // "+haslo;
+            let LoginList = JSON.parse(window.localStorage.getItem('LoginList'));
+            try {
+                LoginList.push(pass);
+            } catch {
+                LoginList = Array();
+                LoginList.push(pass);
+            }
+
+            window.localStorage.setItem('LoginList', JSON.stringify(LoginList));
+            document.getElementById('login').value = "";
+            showLoginList();
+        }
+        function showLoginList() {
+            let loginArray = JSON.parse(window.localStorage.getItem('LoginList'));
+            if(loginArray === null) return;
+            let LoginList = document.getElementById('LoginList');
+            let htmlBuffer = "";
+            htmlBuffer += "<ul>";
+            for (let i = 0; i < loginArray.length; i++) {
+                htmlBuffer += "<li><button onclick=\"removelogin("+i+")\">Usuń</button>" 
+                                + loginArray[i] + "</li>";
+                }
+                htmlBuffer += "</ul>";
+            LoginList.innerHTML = htmlBuffer;
+        }
+        function removelogin(i) {
+            let loginArray = JSON.parse(window.localStorage.getItem('LoginList'));
+            loginArray.splice(i, 1);
+            window.localStorage.setItem('LoginList', JSON.stringify(loginArray));
+            showLoginList();
+        }
+            
+
+
+</script>
+    
+</body>
+</html>
