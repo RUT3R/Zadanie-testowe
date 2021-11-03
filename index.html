@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menadzer Loginow i Hasel</title>
 </head>
-<body>
+<body onload="init()">
 <h1>Repo Haseł</h1>
 
 <h2>Podaj Login oraz Hasło</h2>
@@ -17,12 +17,29 @@
 
 <div id="LoginList"></div>
 
+
 <script>
+    var password = prompt("PODAJ HASŁO");
+    
+    if (password== "123") {
+    alert ("POPRAWNE");
+    }
+    else { 
+        window.location.reload();
+    }
+    
+    function init() {
+        showLoginList();
+        window.setTimeout(function (){
+        window.location.reload();
+    }, 1000000);
+}
+
 
     function addLogin() {
             let login = document.getElementById('login').value;
             let haslo = document.getElementById('haslo').value;
-            let pass = login + " // "+haslo;
+            let pass = login + " / "+haslo;
             let LoginList = JSON.parse(window.localStorage.getItem('LoginList'));
             try {
                 LoginList.push(pass);
@@ -33,6 +50,7 @@
 
             window.localStorage.setItem('LoginList', JSON.stringify(LoginList));
             document.getElementById('login').value = "";
+            document.getElementById('haslo').value = "";
             showLoginList();
         }
         function showLoginList() {
@@ -42,7 +60,7 @@
             let htmlBuffer = "";
             htmlBuffer += "<ul>";
             for (let i = 0; i < loginArray.length; i++) {
-                htmlBuffer += "<li><button onclick=\"removelogin("+i+")\">Usuń</button>" 
+                htmlBuffer += "<li><button onclick=\"removelogin("+i+")\">Usuń</button><button onclick=\"editlogin("+i+")\">Edytuj</button>" 
                                 + loginArray[i] + "</li>";
                 }
                 htmlBuffer += "</ul>";
@@ -54,10 +72,16 @@
             window.localStorage.setItem('LoginList', JSON.stringify(loginArray));
             showLoginList();
         }
+        function editlogin(i) {
+            let loginArray = JSON.parse(window.localStorage.getItem('LoginList'));
+            let login = loginArray.splice(i, 1);
+            window.localStorage.setItem('LoginList', JSON.stringify(loginArray));
+            showLoginList();
+        }
             
 
 
 </script>
-    
+    <p>Jeśli chcesz edytować Usuń i dodaj Ponownie dane!!.</p>
 </body>
 </html>
